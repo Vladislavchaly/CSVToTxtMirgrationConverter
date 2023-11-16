@@ -28,14 +28,20 @@ function convert($csvFile, $outputTxt): void
             
             INSERT INTO translations (uuid, language_id, carrier_id, translation_key, translation_value) VALUES \n");
 
+    $uniqFilter = [];
     foreach ($reader->getRecords() as $record) {
-        if ($record['AR']) {
-            $arValue = addslashes($record['AR']);
-            fwrite($outputHandle, "(UUID(), @arabicLanguageUuid, @carrierUuid, '{$record['KEY']}', '{$arValue}'),\n");
+        if (in_array($record['KEY'], $uniqFilter)) {
+            continue;
         }
-        if ($record['EN']) {
+
+        if ($record['KEY'] && $record['AR']) {
+            $arValue = addslashes($record['AR']);
+            fwrite($outputHandle, "                        (UUID(), @arabicLanguageUuid, @carrierUuid, '{$record['KEY']}', '{$arValue}'),\n");
+            $uniqFilter[] = $record['KEY'];
+        }
+        if ($record['KEY'] && $record['EN']) {
             $enValue = addslashes($record['EN']);
-            fwrite($outputHandle, "(UUID(), @englishLanguageUuid, @carrierUuid, '{$record['KEY']}', '{$enValue}'),\n");
+            fwrite($outputHandle, "                        (UUID(), @englishLanguageUuid, @carrierUuid, '{$record['KEY']}', '{$enValue}'),\n");
         }
     }
 
