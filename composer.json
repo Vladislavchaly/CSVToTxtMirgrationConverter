@@ -1,0 +1,20 @@
+{
+    "name": "newdawn/google-sheet-to-migration",
+    "require": {
+        "league/csv": "^9.11"
+    },
+    "require-dev": {
+        "league/csv": "^9.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Newdawn\\GoogleSheetToMigration\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "chaly",
+            "email": "vladislav.chalyi@playwing.net"
+        }
+    ]
+}
