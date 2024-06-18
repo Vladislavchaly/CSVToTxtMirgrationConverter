@@ -6,7 +6,7 @@ use League\Csv\Reader;
 use League\Csv\UnavailableStream;
 
 if ($argc < 3) {
-    die("Usage: php converter.php input.csv output.txt\n");
+    die("Usage: php src/converter.php input.csv output.txt\n");
 }
 
 $inputFile = $argv[1];
@@ -22,8 +22,8 @@ function convert($csvFile, $outputTxt): void
     $reader->setHeaderOffset(0);
 
     $outputHandle = fopen($outputTxt, 'w');
-    fwrite($outputHandle, "SET @carrierUuid = '0dd2388c-53b8-11ee-8c99-0242ac120002';
-            SET @arabicLanguageUuid = (SELECT uuid FROM languages WHERE code = 'ar');
+    fwrite($outputHandle, "SET @carrierUuid = '2ea1990d-1029-4815-87b4-6cd44dcf26e9';
+            SET @bahasaLanguageUuid = (SELECT uuid FROM languages WHERE code = 'id');
             SET @englishLanguageUuid = (SELECT uuid FROM languages WHERE code = 'en');
             
             INSERT INTO translations (uuid, language_id, carrier_id, translation_key, translation_value) VALUES \n");
@@ -34,9 +34,9 @@ function convert($csvFile, $outputTxt): void
             continue;
         }
 
-        if ($record['KEY'] && $record['AR']) {
-            $arValue = addslashes($record['AR']);
-            fwrite($outputHandle, "                        (UUID(), @arabicLanguageUuid, @carrierUuid, '{$record['KEY']}', '{$arValue}'),\n");
+        if ($record['KEY'] && $record['ID']) {
+            $arValue = addslashes($record['ID']);
+            fwrite($outputHandle, "                        (UUID(), @bahasaLanguageUuid, @carrierUuid, '{$record['KEY']}', '{$arValue}'),\n");
             $uniqFilter[] = $record['KEY'];
         }
         if ($record['KEY'] && $record['EN']) {
